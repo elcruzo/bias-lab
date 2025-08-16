@@ -6,7 +6,8 @@ requests==2.31.0
 beautifulsoup4==4.12.2
 feedparser==6.0.10
 newspaper3k==0.2.8
-spacy>=3.7.0,<3.8.0
+spacy==3.7.4
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
 scikit-learn>=1.4.0
 numpy==1.26.4
 python-dotenv==1.0.0
