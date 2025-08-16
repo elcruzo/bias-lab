@@ -22,7 +22,12 @@ from concurrent.futures import ThreadPoolExecutor
 # Import our modules
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Add the project root to Python path
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(f"🔍 Project root: {project_root}")
+print(f"🔍 Contents: {os.listdir(project_root) if os.path.exists(project_root) else 'NOT FOUND'}")
+sys.path.insert(0, project_root)
 
 from src.config import Config
 from src.news_fetcher import NewsFetcher
