@@ -8,8 +8,19 @@ SPACY_AVAILABLE = False
 nlp = None
 try:
     import spacy
-    nlp = spacy.load("en_core_web_sm")
-    SPACY_AVAILABLE = True
+    try:
+        nlp = spacy.load("en_core_web_sm")
+        SPACY_AVAILABLE = True
+    except OSError:
+        # Try to download model if not found
+        try:
+            import subprocess
+            subprocess.check_call(["python", "-m", "spacy", "download", "en_core_web_sm"])
+            nlp = spacy.load("en_core_web_sm")
+            SPACY_AVAILABLE = True
+        except:
+            print("⚠️ Could not load spaCy model, using fallbacks")
+            pass
 except:
     pass
 

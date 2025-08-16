@@ -27,8 +27,15 @@ class CFA_Engine:
         if SPACY_AVAILABLE:
             try:
                 self.nlp = spacy.load("en_core_web_sm")
-            except:
-                pass
+            except OSError:
+                # Try to download model if not found
+                try:
+                    import subprocess
+                    subprocess.check_call(["python", "-m", "spacy", "download", "en_core_web_sm"])
+                    self.nlp = spacy.load("en_core_web_sm")
+                except:
+                    print("⚠️ Could not load spaCy model, using fallbacks")
+                    pass
         self.embedder = SentenceTransformer('all-MiniLM-L6-v2')
         
     def extract_factual_spine(self, text: str) -> Dict:
