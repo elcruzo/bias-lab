@@ -1207,7 +1207,7 @@ export default function Dashboard() {
                         </h3>
                         <div style={{ height: '300px' }}>
                           <NarrativeNetwork narratives={narratives} articles={articles} />
-                        </div>
+                            </div>
                           </div>
                         )}
                   </div>
@@ -1397,7 +1397,7 @@ export default function Dashboard() {
                     </h3>
                     {loadingDetail ? (
                       // Loading shimmer for CFA
-                      <div>
+              <div>
                         <div className="shimmer" style={{ 
                           height: '1rem', 
                           borderRadius: '0.25rem', 
@@ -1415,11 +1415,11 @@ export default function Dashboard() {
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                               <div className="shimmer" style={{ height: '0.75rem', width: '30%', borderRadius: '0.25rem' }} />
                               <div className="shimmer" style={{ height: '0.75rem', width: '20%', borderRadius: '0.25rem' }} />
-                            </div>
+              </div>
                             <div className="shimmer" style={{ height: '1rem', width: '90%', borderRadius: '0.25rem' }} />
-                          </div>
+                  </div>
                         ))}
-                      </div>
+                </div>
                     ) : selectedArticle.cfa_analysis?.contributions && selectedArticle.cfa_analysis.contributions.length > 0 ? (
                       <div>
                         <p style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' }}>
@@ -1450,7 +1450,7 @@ export default function Dashboard() {
                                 }}>
                                   {contrib.delta > 0 ? '+' : ''}{contrib.delta.toFixed(1)}
                                 </span>
-                              </div>
+              </div>
                               <p style={{
                                 fontSize: '0.875rem',
                                 color: '#374151',
@@ -1459,11 +1459,11 @@ export default function Dashboard() {
                                 lineHeight: '1.4'
                               }}>
                                 &ldquo;{contrib.span}&rdquo;
-                              </p>
-                            </div>
+                </p>
+              </div>
                           ))}
-                        </div>
-                      </div>
+            </div>
+          </div>
                     ) : (
                       <p style={{ fontSize: '0.875rem', color: '#6b7280', fontStyle: 'italic' }}>
                         No bias analysis available for this article.
@@ -1487,7 +1487,7 @@ export default function Dashboard() {
                             width: i === 8 ? '60%' : '100%'
                           }} />
                         ))}
-                      </div>
+            </div>
                     ) : selectedArticle.full_text ? (
                       <div style={{
                         backgroundColor: '#f8fafc',
@@ -1505,13 +1505,13 @@ export default function Dashboard() {
                         }}>
                           {selectedArticle.full_text}
                         </p>
-                      </div>
+          </div>
                     ) : (
                       <p style={{ fontSize: '0.875rem', color: '#6b7280', fontStyle: 'italic' }}>
                         Full article text not available.
                       </p>
                     )}
-                  </div>
+        </div>
 
                   {/* Article Description */}
                   {selectedArticle.description && (
@@ -1520,7 +1520,7 @@ export default function Dashboard() {
                       <p style={{ color: '#6b7280', lineHeight: '1.6', margin: 0 }}>
                         {selectedArticle.description}
                       </p>
-            </div>
+    </div>
                   )}
                 </>
               )}
