@@ -1,12 +1,8 @@
 """The Bias Lab API - Main FastAPI application with CFA and ensemble scoring."""
-import sys
 import os
 
 # Silence the tokenizers parallelism warning
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
-
-# Add parent directory to path so we can import from src
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,31 +15,16 @@ from datetime import datetime
 import json
 from concurrent.futures import ThreadPoolExecutor
 
-# Import our modules
-import sys
-import os
-
-# Add the project root and src directory to Python path (Render-safe)
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-src_dir = os.path.join(project_root, "src")
-print(f"🔍 Project root: {project_root}")
-print(f"🔍 Contents: {os.listdir(project_root) if os.path.exists(project_root) else 'NOT FOUND'}")
-print(f"🔍 SRC dir: {src_dir} exists={os.path.isdir(src_dir)}")
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
-if os.path.isdir(src_dir) and src_dir not in sys.path:
-    sys.path.insert(0, src_dir)
-
-# Import directly from src/ modules to avoid package name resolution issues
-from config import Config
-from news_fetcher import NewsFetcher
-from bias_scorer import BiasScorer
-from cfa_engine import CFA_Engine
-from narrative_graph import NarrativeGraph
-from ensemble_scorer import EnsembleScorer, HeuristicScorer
-from conformal_prediction import ConformalPredictor
-from transparency_scorer import get_transparency_scorer
-from article_cache import get_cache_info, clear_cache
+# Absolute imports from package
+from bias_lab_pipeline.src.config import Config
+from bias_lab_pipeline.src.news_fetcher import NewsFetcher
+from bias_lab_pipeline.src.bias_scorer import BiasScorer
+from bias_lab_pipeline.src.cfa_engine import CFA_Engine
+from bias_lab_pipeline.src.narrative_graph import NarrativeGraph
+from bias_lab_pipeline.src.ensemble_scorer import EnsembleScorer, HeuristicScorer
+from bias_lab_pipeline.src.conformal_prediction import ConformalPredictor
+from bias_lab_pipeline.src.transparency_scorer import get_transparency_scorer
+from bias_lab_pipeline.src.article_cache import get_cache_info, clear_cache
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -459,7 +440,7 @@ async def get_article_detail(article_id: str):
         # Compute CFA on-demand for this article
         if Config.OPENAI_API_KEY:
             try:
-                from src.cfa_engine import CFA_Engine
+                # Import already available at top via direct import mechanism
                 from openai import OpenAI
                 
                 llm_client = OpenAI(api_key=Config.OPENAI_API_KEY)
