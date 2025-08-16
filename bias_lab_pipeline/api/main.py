@@ -1,5 +1,9 @@
 """The Bias Lab API - Main FastAPI application with CFA and ensemble scoring."""
 import os
+import sys
+
+# Add the parent directory to Python path for local imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Silence the tokenizers parallelism warning
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -15,16 +19,16 @@ from datetime import datetime
 import json
 from concurrent.futures import ThreadPoolExecutor
 
-# Absolute imports from package
-from bias_lab_pipeline.src.config import Config
-from bias_lab_pipeline.src.news_fetcher import NewsFetcher
-from bias_lab_pipeline.src.bias_scorer import BiasScorer
-from bias_lab_pipeline.src.cfa_engine import CFA_Engine
-from bias_lab_pipeline.src.narrative_graph import NarrativeGraph
-from bias_lab_pipeline.src.ensemble_scorer import EnsembleScorer, HeuristicScorer
-from bias_lab_pipeline.src.conformal_prediction import ConformalPredictor
-from bias_lab_pipeline.src.transparency_scorer import get_transparency_scorer
-from bias_lab_pipeline.src.article_cache import get_cache_info, clear_cache
+# Relative imports from src package
+from src.config import Config
+from src.news_fetcher import NewsFetcher
+from src.bias_scorer import BiasScorer
+from src.cfa_engine import CFA_Engine
+from src.narrative_graph import NarrativeGraph
+from src.ensemble_scorer import EnsembleScorer, HeuristicScorer
+from src.conformal_prediction import ConformalPredictor
+from src.transparency_scorer import get_transparency_scorer
+from src.article_cache import get_cache_info, clear_cache
 
 # Initialize FastAPI app
 app = FastAPI(
