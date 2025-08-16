@@ -121,7 +121,7 @@ export default function ProfilePage() {
               <div style={{
                 position: 'relative',
                 padding: '1rem',
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+                // background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
                 borderRadius: '50%'
               }}>
                 <Brain style={{ height: '2rem', width: '2rem', color: 'white' }} />
