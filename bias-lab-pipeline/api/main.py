@@ -20,6 +20,10 @@ import json
 from concurrent.futures import ThreadPoolExecutor
 
 # Import our modules
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from src.config import Config
 from src.news_fetcher import NewsFetcher
 from src.bias_scorer import BiasScorer
