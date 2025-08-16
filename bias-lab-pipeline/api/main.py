@@ -23,21 +23,27 @@ from concurrent.futures import ThreadPoolExecutor
 import sys
 import os
 
-# Add the project root to Python path
+# Add the project root and src directory to Python path (Render-safe)
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+src_dir = os.path.join(project_root, "src")
 print(f"🔍 Project root: {project_root}")
 print(f"🔍 Contents: {os.listdir(project_root) if os.path.exists(project_root) else 'NOT FOUND'}")
-sys.path.insert(0, project_root)
+print(f"🔍 SRC dir: {src_dir} exists={os.path.isdir(src_dir)}")
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+if os.path.isdir(src_dir) and src_dir not in sys.path:
+    sys.path.insert(0, src_dir)
 
-from src.config import Config
-from src.news_fetcher import NewsFetcher
-from src.bias_scorer import BiasScorer
-from src.cfa_engine import CFA_Engine
-from src.narrative_graph import NarrativeGraph
-from src.ensemble_scorer import EnsembleScorer, HeuristicScorer
-from src.conformal_prediction import ConformalPredictor
-from src.transparency_scorer import get_transparency_scorer
-from src.article_cache import get_cache_info, clear_cache
+# Import directly from src/ modules to avoid package name resolution issues
+from config import Config
+from news_fetcher import NewsFetcher
+from bias_scorer import BiasScorer
+from cfa_engine import CFA_Engine
+from narrative_graph import NarrativeGraph
+from ensemble_scorer import EnsembleScorer, HeuristicScorer
+from conformal_prediction import ConformalPredictor
+from transparency_scorer import get_transparency_scorer
+from article_cache import get_cache_info, clear_cache
 
 # Initialize FastAPI app
 app = FastAPI(
