@@ -434,7 +434,7 @@ export default function Dashboard() {
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Enter any topic: 'Trump tariffs', 'TikTok ban', 'Climate change', 'AI regulation'..."
+                placeholder="Enter any topic: 'Immigration policy', 'Healthcare reform', 'Gun control', 'Trump Tarriffs', 'TikTok ban', 'Electric vehicles'..."
                       disabled={searching}
                 style={{
                   width: '100%',
