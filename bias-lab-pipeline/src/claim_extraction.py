@@ -8,20 +8,38 @@ SPACY_AVAILABLE = False
 nlp = None
 try:
     import spacy
+    import signal
+    
+    def timeout_handler(signum, frame):
+        raise TimeoutError("spaCy loading timed out")
+    
+    # Set 30 second timeout for spaCy loading
+    signal.signal(signal.SIGALRM, timeout_handler)
+    signal.alarm(30)
+    
     try:
         nlp = spacy.load("en_core_web_sm")
         SPACY_AVAILABLE = True
+        signal.alarm(0)  # Cancel timeout
     except OSError:
-        # Try to download model if not found
+        # Try to download model if not found (with timeout)
         try:
             import subprocess
-            subprocess.check_call(["python", "-m", "spacy", "download", "en_core_web_sm"])
+            subprocess.check_call(["python", "-m", "spacy", "download", "en_core_web_sm"], timeout=120)
             nlp = spacy.load("en_core_web_sm")
             SPACY_AVAILABLE = True
-        except:
-            print("⚠️ Could not load spaCy model, using fallbacks")
+            signal.alarm(0)  # Cancel timeout
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+            print("⚠️ spaCy model download timed out, using fallbacks")
+            signal.alarm(0)  # Cancel timeout
             pass
+    except TimeoutError:
+        print("⚠️ spaCy loading timed out, using fallbacks")
+        pass
+    finally:
+        signal.alarm(0)  # Ensure timeout is cancelled
 except:
+    print("⚠️ Could not import spaCy, using fallbacks")
     pass
 
 @dataclass

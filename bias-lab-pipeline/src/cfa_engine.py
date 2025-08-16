@@ -26,16 +26,37 @@ class CFA_Engine:
         self.nlp = None
         if SPACY_AVAILABLE:
             try:
-                self.nlp = spacy.load("en_core_web_sm")
-            except OSError:
-                # Try to download model if not found
+                import signal
+                
+                def timeout_handler(signum, frame):
+                    raise TimeoutError("spaCy loading timed out")
+                
+                # Set 30 second timeout for spaCy loading
+                signal.signal(signal.SIGALRM, timeout_handler)
+                signal.alarm(30)
+                
                 try:
-                    import subprocess
-                    subprocess.check_call(["python", "-m", "spacy", "download", "en_core_web_sm"])
                     self.nlp = spacy.load("en_core_web_sm")
-                except:
-                    print("⚠️ Could not load spaCy model, using fallbacks")
+                    signal.alarm(0)  # Cancel timeout
+                except OSError:
+                    # Try to download model if not found (with timeout)
+                    try:
+                        import subprocess
+                        subprocess.check_call(["python", "-m", "spacy", "download", "en_core_web_sm"], timeout=120)
+                        self.nlp = spacy.load("en_core_web_sm")
+                        signal.alarm(0)  # Cancel timeout
+                    except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+                        print("⚠️ spaCy model download timed out, using fallbacks")
+                        signal.alarm(0)  # Cancel timeout
+                        pass
+                except TimeoutError:
+                    print("⚠️ spaCy loading timed out, using fallbacks")
                     pass
+                finally:
+                    signal.alarm(0)  # Ensure timeout is cancelled
+            except:
+                print("⚠️ Could not load spaCy model, using fallbacks")
+                pass
         self.embedder = SentenceTransformer('all-MiniLM-L6-v2')
         
     def extract_factual_spine(self, text: str) -> Dict:
